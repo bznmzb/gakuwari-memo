@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>戦国武将お金診断⚔️｜あなたのお金の使い方は誰タイプ？｜学割メモ</title>
+<meta name="description" content="はい・いいえに答えるだけ。あなたのお金の使い方が、戦国武将の誰タイプかを診断。年間いくらお得かも分かる！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="戦国武将お金診断⚔️｜あなたのお金の使い方は誰タイプ？">
+<meta property="og:description" content="はい・いいえに答えるだけ。あなたのお金の使い方が、戦国武将の誰タイプかを診断。年間いくらお得かも分かる！">
+<meta property="og:image" content="img/avatar.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="戦国武将お金診断⚔️">
+<meta name="twitter:description" content="はい・いいえに答えるだけ。あなたのお金の使い方が戦国武将の誰タイプかが分かる！">
+<meta name="twitter:image" content="img/avatar.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+<style>
+/* 戦国×お金診断 専用テーマ（このページだけ金×深紅の世界観に上書き。他ページのcss/app.cssには影響しない） */
+:root{
+  --yellow:#d4af37;--yellow-deep:#7a5c1e;--crimson:#8b1a1a;--crimson-deep:#5c1010;
+}
+body{
+  color-scheme:dark;
+  background:
+    radial-gradient(820px 440px at 50% -150px,rgba(212,175,55,.22) 0%,rgba(139,26,26,.10) 45%,rgba(0,0,0,0) 75%),
+    #08090c;
+}
+.card-q,.card-emoji{color:var(--text)!important}
+.hero-wrap{position:relative;overflow:hidden;margin:-30px -22px 0;width:calc(100% + 44px);
+  aspect-ratio:4/5;max-height:48vh;background:linear-gradient(160deg,#1a1008,#0a0a0c 60%)}
+.hero-img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-wrap.no-img .hero-img{display:none}
+.hero-wrap.no-img::after{content:"⚔️";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;opacity:.35}
+.hero-badge-top{position:absolute;top:16px;left:16px;right:16px;text-align:center;background:rgba(8,9,12,.55);
+  backdrop-filter:blur(3px);border:1px solid rgba(212,175,55,.4);color:#f0dca0;font-weight:800;font-size:14px;
+  padding:8px 14px;border-radius:12px}
+.hero-brand{position:absolute;bottom:14px;left:14px;display:flex;align-items:center;gap:8px;
+  background:rgba(8,9,12,.6);backdrop-filter:blur(3px);border-radius:999px;padding:5px 12px 5px 5px}
+.hero-brand img{width:30px;height:30px;border-radius:50%}
+.hero-brand span{color:var(--yellow);font-weight:800;font-size:12px}
+.pill-badge{display:inline-block;border:1px solid rgba(212,175,55,.4);color:var(--yellow);font-size:11px;
+  font-weight:800;letter-spacing:.08em;padding:5px 14px;border-radius:999px;margin-bottom:14px}
+.start-card{margin-top:16px;background:none;border:none;box-shadow:none;border-radius:0;padding:22px 0 0}
+.start-card h1,.result-head h2{text-shadow:0 0 18px rgba(212,175,55,.35)}
+.btn-yellow,.cross-link{box-shadow:0 8px 0 var(--yellow-deep),0 0 22px rgba(212,175,55,.28)}
+.swipe-card{border-color:rgba(212,175,55,.22)}
+.brand .tag{background:linear-gradient(135deg,var(--yellow),#b8860b);letter-spacing:.08em}
+.brand img{box-shadow:0 0 0 4px rgba(212,175,55,.28),0 0 30px rgba(139,26,26,.35),0 16px 40px rgba(0,0,0,.6)!important}
+.type-wrap{position:relative;width:200px;height:266px;margin:0 auto 10px;border-radius:22px;overflow:hidden;
+  border:1px solid rgba(212,175,55,.3);box-shadow:0 0 0 4px rgba(212,175,55,.15),0 16px 40px rgba(0,0,0,.55);
+  background:linear-gradient(160deg,#1a1008,#0a0a0c 60%)}
+.type-wrap .type-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.type-wrap.no-img .type-img{display:none}
+.type-wrap.no-img::after{content:attr(data-fallback);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;opacity:.5}
+.trivia{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:12px;line-height:1.7}
+.trivia b{color:var(--yellow);font-style:normal}
+.roster-section{margin-top:48px;text-align:center}
+.roster-eyebrow{font-size:11px;letter-spacing:.12em;color:var(--yellow);font-weight:800;opacity:.85}
+.roster-title{font-size:21px;font-weight:900;margin-top:4px}
+.roster-sub{font-size:13px;color:var(--muted);margin-top:8px;font-weight:600}
+.roster-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.roster-item{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 4px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:.14s}
+.roster-item:active{transform:scale(.95);border-color:rgba(212,175,55,.4)}
+.roster-ico{position:relative;width:42px;height:42px;border-radius:50%;background:var(--panel2);
+  border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;
+  font-size:20px;overflow:hidden}
+.roster-ico img{width:100%;height:100%;object-fit:cover;object-position:center 12%;display:block}
+.roster-ico.no-img img{display:none}
+.roster-ico.no-img::after{content:attr(data-fallback)}
+.roster-name{font-size:10.5px;font-weight:800;color:var(--text);line-height:1.3}
+.member-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px 20px;
+  margin-top:18px;text-align:left}
+.member-benefits{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.member-benefits li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text);
+  font-weight:600;line-height:1.6}
+.member-input{width:100%;padding:14px 16px;border-radius:14px;background:var(--panel2);border:1px solid var(--line2);
+  color:var(--text);font:inherit;font-size:14px;margin-bottom:12px}
+.member-input::placeholder{color:var(--muted)}
+.member-btn{display:block;width:100%;padding:15px;border-radius:14px;border:none;font-weight:900;font-size:15px;
+  background:var(--yellow);color:#000;cursor:pointer;font:inherit;box-shadow:0 6px 0 var(--yellow-deep)}
+.member-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--yellow-deep)}
+.rec{align-items:flex-start}
+.rec .ico{margin-top:2px}
+.rec .go{align-self:center}
+.rec .txt .detail{display:block;font-size:12.5px;color:var(--text);font-weight:500;line-height:1.6;
+  margin-top:6px;opacity:.85}
+.rec.fin{border-color:rgba(212,175,55,.4);box-shadow:0 0 0 1px rgba(212,175,55,.15)}
+.fin-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:10px;text-align:center}
+.type-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:80;
+  display:none;align-items:flex-end;justify-content:center}
+.type-modal.show{display:flex}
+.type-modal-card{position:relative;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;
+  background:var(--panel);border-radius:26px 26px 0 0;border:1px solid var(--line2);
+  padding:20px 22px 32px;animation:modalUp .25s ease}
+@keyframes modalUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.type-modal-close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;
+  background:var(--panel2);border:1px solid var(--line2);color:var(--text);font-size:14px;cursor:pointer;z-index:2}
+.type-modal-imgwrap{width:100%;aspect-ratio:3/4;max-height:320px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(160deg,#1a1008,#0a0a0c 60%);margin-top:6px}
+.type-modal-imgwrap img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.type-modal-label{text-align:center;font-size:11px;letter-spacing:.1em;color:var(--yellow);font-weight:800;margin-top:16px}
+.type-modal-card h3{text-align:center;font-size:22px;font-weight:900;margin-top:4px}
+.type-modal-card .code-row{margin-top:10px}
+.type-modal-desc{font-size:14px;color:var(--text);line-height:1.8;margin-top:16px}
+.type-modal-card .trivia{margin-top:12px}
+.type-modal-card .btn-main{margin-top:20px}
+.toast{position:fixed;top:22px;left:50%;transform:translate(-50%,-12px);background:var(--yellow);color:#000;
+  font-weight:900;font-size:14px;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:.25s ease;z-index:60;box-shadow:0 10px 26px rgba(0,0,0,.45);white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#quiz.active{display:flex;flex-direction:column;min-height:calc(100vh - 90px)}
+.quiz-top,.quiz-bottom{flex-shrink:0}
+.swipe-wrap{position:relative;flex:1;min-height:220px;display:flex;align-items:center;justify-content:center}
+.swipe-card{position:relative;width:100%;max-width:440px;min-height:250px;background:linear-gradient(180deg,#1a1d27,#15171e);
+  border:1px solid var(--line2);border-radius:24px;box-shadow:0 22px 55px rgba(0,0,0,.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px 26px;
+  cursor:grab;touch-action:pan-y;user-select:none}
+.swipe-card:active{cursor:grabbing}
+.card-emoji{font-size:42px;margin-bottom:16px}
+.card-q{font-size:22px;font-weight:900;text-align:center;line-height:1.6}
+.hint{position:absolute;top:18px;font-size:22px;font-weight:900;padding:5px 15px;border-radius:12px;opacity:0}
+.hint-yes{right:16px;color:#22d37a;border:3px solid #22d37a;transform:rotate(11deg)}
+.hint-no{left:16px;color:#ff6b6b;border:3px solid #ff6b6b;transform:rotate(-11deg)}
+.swipe-btns{display:flex;gap:14px;justify-content:center;margin-top:22px}
+.swipe-btns button{flex:1;max-width:170px;padding:16px;border-radius:16px;font-size:17px;font-weight:900;
+  cursor:pointer;font-family:inherit;background:var(--panel);transition:.12s}
+.swipe-btns button:active{transform:scale(.96)}
+.sw-no{color:#ff6b6b;border:2px solid #ff6b6b}
+.sw-yes{color:#22d37a;border:2px solid #22d37a}
+.swipe-hintrow{text-align:center;font-size:12px;color:var(--muted);font-weight:700;margin-top:14px}
+.code-row{display:flex;justify-content:center;gap:8px;margin:10px 0 2px;flex-wrap:wrap}
+.code-chip{background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--text)}
+.rarity{font-size:13px;font-weight:800;color:var(--yellow);margin-top:6px}
+.bridge{background:rgba(212,175,55,.10);border:1px solid rgba(212,175,55,.28);border-radius:14px;
+  padding:13px 16px;margin:18px 0 2px;font-size:14px;font-weight:700;line-height:1.7;color:#f0dca0}
+.bridge b{color:var(--yellow)}
+.q-remain{color:var(--yellow);font-weight:900}
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:70}
+.confetti-piece{position:absolute;top:-30px;animation:confettiFall 1.5s ease-in forwards}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
+#kanjiRain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+.wrap{position:relative;z-index:1}
+</style>
+</head>
+<body>
+<canvas id="kanjiRain"></canvas>
+<div class="toast" id="toast"></div>
+<div class="wrap">
+
+  <!-- ① スタート -->
+  <section class="screen active" id="start">
+    <div class="hero-wrap">
+      <img class="hero-img" src="img/hero.jpg" alt="戦国武将お金診断" onerror="this.parentElement.classList.add('no-img')">
+      <span class="hero-badge-top">⚔️ お金の使い方で武将を召喚せよ！</span>
+      <div class="hero-brand"><img src="img/avatar.png" alt="ぶたメモ"><span>🐷 学割メモ</span></div>
+    </div>
+    <div class="start-card">
+      <span class="pill-badge">SENGOKU MONEY DIAGNOSIS</span>
+      <h1>あなたのお金の使い方は<br>どの<span class="hl">戦国武将</span>タイプ？</h1>
+      <p>はい・いいえをスワイプするだけ。<br>あなたのお金の使い方から、合う学割を診断⚔️<br><b>年間いくらお得か</b>も分かる！</p>
+      <div class="meta"><span>⏱️ 約1分</span><span>⚔️ 12武将</span><span>📲 シェアできる</span></div>
+      <button class="btn-main btn-yellow" onclick="startQuiz()">⚔️ 診断を開始する →</button>
+    </div>
+
+    <div class="roster-section">
+      <p class="roster-eyebrow">12 WARLORDS</p>
+      <h3 class="roster-title">武将一覧</h3>
+      <p class="roster-sub">お金の使い方によって、この12人の誰かに診断されます。</p>
+      <div class="roster-grid" id="rosterGrid"></div>
+    </div>
+
+    <div class="roster-section">
+      <p class="roster-eyebrow">MORE</p>
+      <h3 class="roster-title">もっと知りたい人へ</h3>
+      <div class="member-card">
+        <ul class="member-benefits">
+          <li><span>🐷</span>診断結果のシェアランキングが見られる（準備中）</li>
+          <li><span>💌</span>新しい学割情報をいち早く受け取れる（準備中）</li>
+          <li><span>⚔️</span>相性診断・追加の武将も今後公開予定</li>
+        </ul>
+        <input class="member-input" type="email" placeholder="メールアドレスを入力">
+        <button class="member-btn" onclick="showToast('準備中です🐷 もう少々お待ちを')">更新を受け取る</button>
+      </div>
+    </div>
+
+    <p class="foot-note">結果は目安です。価格・条件は各公式でご確認ください（2026年時点）。本ページには広告（アフィリエイト）を含みます。</p>
+  </section>
+
+  <!-- ② 質問（スワイプ） -->
+  <section class="screen" id="quiz">
+    <div class="quiz-top">
+      <div class="progress" id="dots"></div>
+      <p class="q-num" id="qNum"></p>
+    </div>
+    <div class="swipe-wrap">
+      <div class="swipe-card" id="card">
+        <div class="hint hint-yes">はい</div>
+        <div class="hint hint-no">いいえ</div>
+        <div class="card-emoji" id="cardEmo">🤔</div>
+        <p class="card-q" id="cardQ"></p>
+      </div>
+    </div>
+    <div class="quiz-bottom">
+      <div class="swipe-btns">
+        <button class="sw-no" onclick="choose('no')">✕ いいえ</button>
+        <button class="sw-yes" onclick="choose('yes')">はい ○</button>
+      </div>
+      <div class="swipe-hintrow">👉 カードを左右にスワイプでもOK</div>
+      <button class="back-link" id="backBtn" onclick="back()">← 1つ戻る</button>
+    </div>
+  </section>
+
+  <!-- ③ ローディング -->
+  <section class="screen" id="loading">
+    <div class="loading">
+      <div class="pig">⚔️</div>
+      <p id="loadMsg">あなたの性格を診断中…</p>
+    </div>
+  </section>
+
+  <!-- ④ 結果 -->
+  <section class="screen" id="result">
+    <div class="result-head">
+      <div class="type-wrap" id="typeWrap">
+        <img class="type-img" id="typeImg" src="" alt="" onerror="this.parentElement.classList.add('no-img')">
+      </div>
+      <p class="label">軍議の結果</p>
+      <h2 id="typeName"></h2>
+      <div class="code-row" id="codeRow"></div>
+      <p class="rarity" id="rarity"></p>
+      <p class="sub" id="typeDesc"></p>
+      <p class="trivia" id="trivia"></p>
+    </div>
+    <div class="bridge" id="bridge"></div>
+    <div style="text-align:center">
+      <p class="big-label">このタイプなら年間</p>
+      <div class="big-num-wrap">¥<span id="bigNum">0</span><span class="oku">お得！</span></div>
+      <p class="years">大学4年なら <b id="yearsNum">¥0</b> の差！😳</p>
+    </div>
+    <p class="rec-title">あなたにおすすめの学割🐷</p>
+    <div class="rec-list" id="recList"></div>
+    <p class="rec-title">お金の使い方に合う金融サービス🏦</p>
+    <div class="rec-list" id="finList"></div>
+    <p class="fin-note">※クレジットカード・証券口座は必ずご自身の判断で。年会費・手数料・リスクを確認してから申し込みましょう。作りすぎ・使いすぎには注意。</p>
+    <a class="cross-link" href="simulator.html">💰 学割で正確な節約額を計算する →</a>
+    <div class="share-row">
+      <button class="share-x" onclick="shareX()">𝕏 で結果をシェア</button>
+      <button class="share-line" onclick="shareLine()">LINEで送る</button>
+    </div>
+    <button class="retry" onclick="retry()">⚔️ 再び出陣する</button>
+    <p class="foot-note">
+      節約額はタイプ別のおおよその目安です。価格・条件は各公式サイトでご確認ください（2026年時点）。本ページのリンクには広告を含みます。<br>
+      クレジットカードは使いすぎに注意し、自分に合う1枚を選びましょう。
+    </p>
+  </section>
+
+</div>
+
+<!-- 武将図鑑モーダル -->
+<div class="type-modal" id="typeModal" onclick="if(event.target===this)closeTypeModal()">
+  <div class="type-modal-card">
+    <button class="type-modal-close" onclick="closeTypeModal()">✕</button>
+    <div class="type-modal-imgwrap"><img id="modalImg" src="" alt=""></div>
+    <p class="type-modal-label">武将図鑑</p>
+    <h3 id="modalName"></h3>
+    <div class="code-row" id="modalTags"></div>
+    <p class="type-modal-desc" id="modalDesc"></p>
+    <p class="trivia" id="modalTrivia"></p>
+    <button class="btn-main btn-yellow" onclick="closeTypeModal();startQuiz();">⚔️ 診断して確かめる →</button>
+  </div>
+</div>
+
+<script>
+// はい/いいえの質問。yes/noそれぞれ該当する武将IDへ加点する方式。
+var QUESTIONS=[
+  {emo:"🛍️",q:"新商品が発売されたら、その日のうちに買うことが多い",yes:["nobunaga","masamune"],no:["ieyasu","mitsunari"]},
+  {emo:"🍻",q:"友達や後輩には、進んで奢る方だ",yes:["hideyoshi","toshiie"],no:["kenshin","mitsunari"]},
+  {emo:"⏳",q:"欲しいものは、セールのタイミングを狙って買う方だ",yes:["ieyasu","shingen"],no:["nobunaga","yukimura"]},
+  {emo:"🔍",q:"何か買うときは、口コミやレビューを参考にする方だ",yes:["shingen","mitsuhide"],no:["nobunaga","yukimura"]},
+  {emo:"💴",q:"お金の貸し借りはきっちり精算したい方だ",yes:["kenshin","mitsunari"],no:["hideyoshi","toshiie"]},
+  {emo:"📚",q:"参考書や講座など、学びには積極的にお金を使う方だ",yes:["mitsuhide","shingen"],no:["masamune","yoshimoto"]},
+  {emo:"✨",q:"同じ機能なら、ブランドやデザインで選びたい",yes:["masamune","yoshimoto"],no:["ieyasu","mitsunari"]},
+  {emo:"🎯",q:"普段は財布のひもが固いが、ここぞという時は大きく使う方だ",yes:["yukimura","hideyoshi"],no:["ieyasu","kenshin"]},
+  {emo:"📊",q:"支出や家計は、こまめに記録しておきたい方だ",yes:["mitsunari","shingen"],no:["yukimura","nobunaga"]},
+  {emo:"🙅",q:"人と違うものを持ちたい方だ",yes:["nobunaga","oichi"],no:["yoshimoto","hideyoshi"]},
+  {emo:"🍜",q:"後輩や年下の分は、率先して払う方だ",yes:["toshiie","hideyoshi"],no:["oichi","nobunaga"]},
+  {emo:"🎨",q:"周りの評判より、自分の好みを優先したい方だ",yes:["oichi","masamune"],no:["yoshimoto","hideyoshi"]},
+  {emo:"🛠️",q:"値段より、長く使えるかどうかで選ぶ方だ",yes:["yoshimoto","ieyasu"],no:["nobunaga","yukimura"]},
+  {emo:"🤝",q:"お金のことより、その場の空気や関係を優先したい方だ",yes:["hideyoshi","toshiie"],no:["mitsunari","kenshin"]},
+  {emo:"🌱",q:"スキルアップへの出費は、将来への投資だと思う",yes:["mitsuhide","shingen"],no:["masamune","yukimura"]},
+  {emo:"🎮",q:"1人の時間・趣味には、迷わずお金を使う方だ",yes:["mitsuhide","oichi"],no:["hideyoshi","toshiie"]}
+];
+
+var P={
+  apm:{ico:"🎧",bg:"#3a1f2b",name:"Apple Music 学割",desc:"月500円オフ",pr:true,url:"https://music.apple.com/jp/student",
+    detail:"学生証で学割認証すると、通常月1,080円が月580円に。Apple TV+も追加料金なしでついてくる。"},
+  spo:{ico:"🟢",bg:"#1d3328",name:"Spotify 学割",desc:"月500円オフ",pr:true,url:"https://www.spotify.com/jp/student/",
+    detail:"SheerIDで学生認証すると月980円→480円に。在学中は最大4年まで更新しながら使い続けられる。"},
+  ytb:{ico:"▶️",bg:"#3a2020",name:"YouTube Premium 学割",desc:"広告なし＆月500円オフ",pr:true,url:"https://www.youtube.com/premium/student",
+    detail:"広告非表示・バックグラウンド再生・YouTube Musicもセットで月1,280円→780円に。"},
+  prm:{ico:"📦",bg:"#1f2a3a",name:"Prime Student",desc:"6ヶ月無料＆月300円",pr:true,url:"https://www.amazon.co.jp/b?node=2410972051",
+    detail:"初回6ヶ月無料、その後は一般会員の半額（月300円）。お急ぎ便・Prime Video・Amazon Musicも対象。"},
+  adb:{ico:"🎨",bg:"#3a2020",name:"Adobe CC 学割",desc:"学生は大幅オフ",pr:true,url:"https://www.adobe.com/jp/creativecloud/buy/students.html",
+    detail:"Photoshop・Illustratorなど全アプリ使い放題のコンプリートプランが通常の半額以下に。大学の.ac.jpメールがあると審査がスムーズ。"},
+  apl:{ico:"📱",bg:"#2a2a2a",name:"Apple 学割",desc:"Mac・iPadが学割価格",pr:true,url:"https://www.apple.com/jp-edu/store",
+    detail:"Mac・iPadが割引価格で買える上、時期によってはApple Gift Card付きキャンペーンも。購入時に学生認証が必要。"},
+  mst:{ico:"🪟",bg:"#1f2a3a",name:"Microsoft 365 学割",desc:"Officeが学生無料の場合も",pr:true,url:"https://www.microsoft.com/ja-jp/education/students",
+    detail:"通っている大学がライセンス契約していれば、Word・Excel・PowerPointが無料で使えることも。まず大学メールで確認を。"},
+  jr :{ico:"🚄",bg:"#1d3328",name:"JRの学割乗車券",desc:"片道101km以上で2割引",pr:false,url:"https://jreastfaq.jreast.co.jp/faq/show/2977?category_id=15&site_domain=default",
+    detail:"学校発行の「学割証」を窓口で提示すると、片道101km以上の乗車券が2割引に。帰省や旅行で効果大。"},
+  bus:{ico:"🚌",bg:"#1f2a3a",name:"夜行・高速バスの学割",desc:"学生証で約20%割引",pr:true,url:"https://travel.willer.co.jp/campaign/student/",
+    detail:"学生証提示だけで多くのバス会社が2割前後割引に。ウィラーなど大手は学生専用プランもある。"},
+  s18:{ico:"🎫",bg:"#2a2f1f",name:"青春18きっぷ",desc:"夏はJR乗り放題が激安",pr:false,url:"https://jr-group.jp/seishun18/",
+    detail:"春・夏・冬の期間限定でJR普通・快速列車が乗り放題に。5回分で約1万円、1回あたり2,410円が目安。"},
+  kar:{ico:"🎤",bg:"#2a1f3a",name:"カラオケの学割",desc:"平日昼が激安",pr:false,url:"https://www.google.com/search?q=カラオケ+学割",
+    detail:"平日昼間の学生パックが特に安く、フリータイムでも数百円程度のことが多い。学生証の提示が条件。"},
+  mov:{ico:"🎬",bg:"#2a1f3a",name:"映画館の学割",desc:"学生1,000円台",pr:false,url:"https://www.google.com/search?q=映画館+学生料金",
+    detail:"学生料金は1,000円台前半が相場（一般は1,900円前後）。会員証と併用でさらに安くなる劇場もある。"},
+  r1 :{ico:"🎳",bg:"#1f2a3a",name:"ラウンドワンの学生料金",desc:"スポッチャ・ボウリング",pr:false,url:"https://www.round1.co.jp/service/spo-cha/gakusei/index.html",
+    detail:"スポッチャの学生料金は土日でも一般より数百円安い。深夜パックが学割対象の店舗も多い。"},
+  hair:{ico:"💇",bg:"#3a1f2e",name:"美容院の学割",desc:"学生証で割引",pr:false,url:"https://www.google.com/search?q=美容院+学割",
+    detail:"学割メニューがある美容院は多く、カットで数百〜1,000円程度安くなることも。予約時に確認を。"},
+  spt:{ico:"👟",bg:"#1d3328",name:"スポーツブランドの学割",desc:"adidas・Nike・NB 10%off",pr:true,url:"https://www.adidas.jp/student-discount",
+    detail:"adidas・Nike・New Balanceなど公式オンラインストアで学生認証すると10%OFFが基本。年に何度か使えるブランドも。"},
+  app:{ico:"🛍️",bg:"#3a2020",name:"アパレルECの学生割",desc:"学生認証でお得",pr:true,url:"https://www.google.com/search?q=アパレル+学生割引",
+    detail:"学生認証サービス経由で会員登録すると、対象ブランドの通販サイトで割引クーポンがもらえることが多い。"},
+  cos:{ico:"💄",bg:"#3a1f2e",name:"コスメの学割・定期",desc:"学割価格",pr:true,url:"https://www.google.com/search?q=コスメ+学割",
+    detail:"定期便・サブスク型のコスメサービスで学割価格が用意されていることがある。初回割引と併用できる場合も。"}
+};
+
+var F={
+  smbc:{ico:"💳",bg:"#1a2f4a",name:"三井住友カード（NL）学生専用サービス",desc:"年会費無料・対象店舗で最大7%還元",
+    url:"https://www.smbc-card.com/camp/numberless_student_koneko/index.jsp",
+    detail:"コンビニ・マックなどタッチ決済で還元率アップ。ナンバーレス設計で安全性も高い、学生に人気の1枚。"},
+  rakuten:{ico:"🛒",bg:"#3a1414",name:"楽天カード",desc:"年会費無料・どこで使ってもポイントが貯まる",
+    url:"https://www.rakuten-card.co.jp/",
+    detail:"楽天市場はもちろん、普段の買い物すべてがポイント対象。汎用性が高く、初めての1枚にも選ばれやすい。"},
+  jcbw:{ico:"💎",bg:"#1f1f3a",name:"JCB カード W",desc:"還元率が常に2倍・年会費無料（39歳以下限定）",
+    url:"https://www.jcb.co.jp/promotion/ordercard/w/index.html",
+    detail:"入会条件は18〜39歳。ずっと還元率2倍が続く、無駄のない1枚を探している人向け。"},
+  sbi:{ico:"📈",bg:"#0f2a1f",name:"SBI証券（つみたてNISA）",desc:"月100円から始められる積立投資",
+    url:"https://go.sbisec.co.jp/lp/nisaxyoung_220725.html",
+    detail:"少額から時間をかけてコツコツ資産形成。学生のうちから始めておくと将来の差が大きい。"}
+};
+
+var TYPES={
+  nobunaga:{name:"織田信長⚔️",emo:"⚔️",tags:["🆕新しい物好き","⚡即決","🎯目立ちたがり"],rarity:9,save:28000,
+    desc:"新商品が発売されたら、発売日に並んででも欲しい。友達に「え、もう買ったの!?」って言われるの、実は結構好きでしょ。人と同じものを持つのがなんとなく嫌で、気づいたら周りより一歩先を歩いてる。みんなが様子見してる間に、もう使いこなしてレビューまで書いてるタイプ。その「早すぎ」なフットワーク、実は情報弱者にならない一番の防御力。",
+    trivia:"信長は「楽市楽座」で税や座（既得権益）を廃止し、自由な商売を認めた経済改革の先駆者。新しいものに飛びつくあなたの直感、ご先祖(?)譲りかも。",
+    bridge:"新しいものにすぐ飛びつくあなたは、<b>ガジェット・ソフトの学割</b>が一番効く。",recs:["apl","adb","ytb"],fin:"smbc"},
+  hideyoshi:{name:"豊臣秀吉🎉",emo:"🎉",tags:["🤝人付き合い","💸気前がいい","🎉場を盛り上げる"],rarity:11,save:16000,
+    desc:"飲み会や誕生日、気づいたら奢ってることが多い。「そこまでしなくていいのに」って言われても、人を喜ばせる方が自分も嬉しいタイプ。割り勘計算してる間に、もう「今日は奢るよ」って言っちゃってる。損得で考えたら赤字かもしれないけど、その人望が回り回って一番のセーフティネットになってる。",
+    trivia:"秀吉は「北野大茶会」を開き、身分を問わず誰でも参加できる茶会でみんなを喜ばせた「太っ腹」の元祖。人を喜ばせたいあなたの気前の良さ、名将譲りかも。",
+    bridge:"人との時間にお金を使うあなたは、<b>遊び・エンタメの学割</b>で交際費を軽くしよう。",recs:["kar","mov","r1"],fin:"rakuten"},
+  ieyasu:{name:"徳川家康🐢",emo:"🐢",tags:["🐢慎重","⏳我慢強い","💰貯金型"],rarity:12,save:22000,
+    desc:"セールになるまで待てる。今すぐ欲しくても「本当に必要か」を一晩考えてから買う。カートに入れたまま何日も寝かせて、結局買わずに終わることも多いはず。周りに「慎重すぎ」と言われがちだけど、気づいたら口座残高は一番減ってない。我慢強さは、実は一番のコスパ最強スキル。",
+    trivia:"家康は「鳴かぬなら鳴くまで待とう」の忍耐強さで知られ、質素倹約を徹底して幕府の財政基盤を築いた「貯金の達人」。あなたの我慢強さ、まさに天下人の資質。",
+    bridge:"我慢強いあなたは、<b>定番の学割を淡々と使う</b>のが一番向いてる。",recs:["jr","prm","mst"],fin:"sbi"},
+  masamune:{name:"伊達政宗🦅",emo:"🦅",tags:["👑こだわり派","✨ブランド","🎨一点豪華主義"],rarity:8,save:24000,
+    desc:"カバンや靴、細部までこだわりたい。人と被らないものを選びたい美意識の持ち主。「なんでそこにこだわるの?」と聞かれても、自分の中では譲れない理由がちゃんとある。浪費家に見られがちだけど、実はその自己投資が自分の価値を上げていることに、周りより早く気づいている。",
+    trivia:"政宗の派手好きな装いが「伊達者（だてもの）」＝おしゃれな人、の語源になったって知ってた？こだわりを貫く美意識、ちゃんと言葉に残るレベル。",
+    bridge:"こだわりに投資するあなたは、<b>ファッション・コスメの学割</b>で自分磨きをもっとお得に。",recs:["spt","app","cos"],fin:"jcbw"},
+  yukimura:{name:"真田幸村🔥",emo:"🔥",tags:["🔥ここぞで大胆","🎲勝負師","⚖️メリハリ"],rarity:7,save:20000,
+    desc:"普段は財布の紐が固いのに、ここぞという勝負（推しのグッズ、限定チケット）では一気に全力投球。「あんなに渋ってたのに!?」と周りを驚かせるのがお決まりのパターン。その「ここぞ」の見極め、実は誰よりも上手い。",
+    trivia:"幸村は大坂の陣で寡兵ながら徳川本陣に迫り、家康にも「日本一の兵（つわもの）」と言わしめた勝負師。ここぞの集中力、歴史に名を残すレベル。",
+    bridge:"ここぞで動けるあなたは、<b>期間限定の学割</b>を逃さず使えるタイプ。",recs:["mov","r1","kar"],fin:"smbc"},
+  kenshin:{name:"上杉謙信⚖️",emo:"⚖️",tags:["⚖️きっちり清算","🤍フェア","📏私欲がない"],rarity:7,save:18000,
+    desc:"割り勘は1円単位まできっちり。貸したお金は忘れず返してもらうし、借りたお金もすぐ返す。曖昧なお金のやり取りがなんとなく気持ち悪くて、つい計算し直しちゃう。「細かい」と思われがちだけど、そのフェアさのおかげで誰よりも信頼されてる。",
+    trivia:"謙信は敵対していた武田信玄が塩不足で困った際、あえて塩を送ったという逸話が「敵に塩を送る」の語源に。損得より筋を通すあなたのフェアさ、まさに謙信スタイル。",
+    bridge:"きっちり管理できるあなたは、<b>交通系の学割</b>を無駄なく使いこなせる。",recs:["jr","bus","s18"],fin:"rakuten"},
+  shingen:{name:"武田信玄🗺️",emo:"🗺️",tags:["🔍情報収集","📊比較検討","🗺️計画的"],rarity:8,save:26000,
+    desc:"買う前に必ずレビューや比較サイトをチェックする。動くと決めたら一気に情報を集めて即行動。友達に「まだ検討中?」と言われる頃には、もう3サイト比較し終えてる。「準備しすぎ」に見えて、実はその下調べが失敗を一番減らしてる。",
+    trivia:"信玄は「甲州金」という独自の金貨制度を整え、治水事業「信玄堤」にも力を注いだ計画派。下調べしてから動くあなたの堅実さ、経済官僚の才能あり。",
+    bridge:"リサーチ力があるあなたは、<b>ガジェット系の学割</b>を一番賢く比較できる。",recs:["adb","mst","apl"],fin:"jcbw"},
+  mitsuhide:{name:"明智光秀📚",emo:"📚",tags:["📚自己投資","🎓教養","🧐慎重派"],rarity:6,save:19000,
+    desc:"本や講座、資格の勉強にはお金を惜しまないタイプ。周りに理解されにくいこともあるけど、「今すぐ役立たなくてもいつか効いてくる」と信じて投資し続けられる。実はその自己投資が一番長期的なリターンを生む。",
+    trivia:"光秀は連歌や茶道にも通じた当代随一の教養人。歴史の教科書には「謀反人」とだけ書かれがちだけど、実は誰よりも学びに投資していた人物。",
+    bridge:"学びに投資するあなたは、<b>ソフト・ツール系の学割</b>で自己投資をさらに効率化できる。",recs:["adb","mst","spo"],fin:"sbi"},
+  toshiie:{name:"前田利家🍜",emo:"🍜",tags:["🍜義理人情","💸後輩に奢る","🫂面倒見がいい"],rarity:8,save:15000,
+    desc:"後輩や友達にご飯を奢りがち。「先輩だから」で財布を出すのが染み付いてる。誰かが会計で財布を探してる間に、もうレジで支払い終えてることも多いはず。実はその気前の良さが、困った時に助けてもらえる一番の保険になっている。",
+    trivia:"利家は「加賀百万石」の礎を築いた人物。人望の厚さで多くの家臣・同僚に慕われ、その繋がりが後の日本最大級の藩に繋がった。",
+    bridge:"人望が厚いあなたは、<b>みんなで使える遊びの学割</b>で交際費を賢く節約しよう。",recs:["kar","mov","r1"],fin:"rakuten"},
+  mitsunari:{name:"石田三成📝",emo:"📝",tags:["📝家計簿","🔢細かい管理","💯完璧主義"],rarity:6,save:30000,
+    desc:"家計簿アプリを毎日開いて、1円の誤差も気になる。「そこまで細かく管理しなくても」と言われるけど、数字が合ってないと落ち着かない。気づいたら誰よりも無駄遣いがない完璧主義者。",
+    trivia:"三成は豊臣政権の五奉行として、財政や兵站（物資管理）を一手に担った超実務派。家計簿レベルの緻密な管理能力、戦国屈指の「経理担当」だった。",
+    bridge:"管理能力が高いあなたは、<b>定期券・交通系の学割</b>を隅々まで使いこなせる。",recs:["jr","bus","prm"],fin:"sbi"},
+  yoshimoto:{name:"今川義元👘",emo:"👘",tags:["👘格式・ブランド","🎯本物志向","🛠️長く使う"],rarity:9,save:21000,
+    desc:"安いものより、長く使える良いものを選ぶタイプ。「見栄っ張り」に見えて、値段より品質・長く使えるかで判断してる。実は失敗しない買い物の目利き力を持っている。",
+    trivia:"義元の今川家は京都の公家文化を積極的に取り入れた格式高い家柄で、「海道一の弓取り」とも称された実力者。見た目だけの見栄っ張りとは訳が違う。",
+    bridge:"本物志向のあなたは、<b>美容・ファッションの学割</b>で質の良いものを賢く手に入れよう。",recs:["hair","spt","app"],fin:"jcbw"},
+  oichi:{name:"お市の方🌙",emo:"🌙",tags:["🌙自分軸","🎨独自の美意識","🙅流されない"],rarity:9,save:17000,
+    desc:"みんなが良いと言うものより、自分が本当にいいと思うものを選べる。トレンドに流されない。「なんでそれ選んだの?」と聞かれても、自分基準の答えがちゃんとある。「浮いてる」と言われることもあるけど、実は誰よりもブレない価値観を持っている。",
+    trivia:"お市は「戦国一の美女」と称されながら、政略結婚に翻弄されても最期まで自分の意志を貫いた人物。周りに流されないあなたの芯の強さ、まさにお市譲り。",
+    bridge:"自分軸があるあなたは、<b>コスメ・美容の学割</b>で自分だけのスタイルを安く楽しめる。",recs:["cos","hair","spt"],fin:"rakuten"}
+};
+
+var LOADMSGS=["あなたのお金の使い方を診断中…","16の質問を計算中…","ぴったりの武将タイプを探し中…"];
+var PRAISE=["即決！かっこいい👀","迷いなし！自分わかってる🔥","スパッと決めるね👏","はやっ！直感タイプ⚡","いい判断力✨"];
+
+var idx=0, scores={}, answers=[], qStart=0;
+
+function show(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById(id).classList.add("active");window.scrollTo(0,0);
+  var rain=document.getElementById("kanjiRain");
+  if(rain)rain.style.display=(id==="start")?"block":"none";}
+
+function startQuiz(){idx=0;scores={};answers=[];renderCard();show("quiz");}
+
+function renderDots(){
+  document.getElementById("dots").innerHTML=QUESTIONS.map(function(_,i){
+    return '<span class="dot'+(i<=idx?' on':'')+'"></span>';}).join("");
+}
+function renderCard(){
+  var q=QUESTIONS[idx];
+  document.getElementById("qNum").textContent="質問 "+(idx+1)+" / "+QUESTIONS.length;
+  document.getElementById("cardEmo").textContent=q.emo;
+  document.getElementById("cardQ").textContent=q.q;
+  document.getElementById("backBtn").style.visibility = idx===0 ? "hidden" : "visible";
+  renderDots();
+  var card=document.getElementById("card");
+  card.style.transition="none";card.style.transform="";card.style.opacity="1";clearHints();
+  qStart=Date.now();
+}
+function showToast(msg){
+  var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+  clearTimeout(window._tt);window._tt=setTimeout(function(){t.classList.remove("show");},950);
+}
+function setHints(dx){
+  var y=document.querySelector(".hint-yes"),n=document.querySelector(".hint-no");
+  y.style.opacity=dx>25?Math.min(1,(dx-25)/75):0;
+  n.style.opacity=dx<-25?Math.min(1,(-dx-25)/75):0;
+}
+function clearHints(){
+  var y=document.querySelector(".hint-yes"),n=document.querySelector(".hint-no");
+  if(y)y.style.opacity=0;if(n)n.style.opacity=0;
+}
+function commit(dir){
+  var q=QUESTIONS[idx];
+  var ids=dir==="yes"?q.yes:q.no;
+  ids.forEach(function(id){scores[id]=(scores[id]||0)+1;});
+  answers[idx]=dir;
+  if(idx>0 && (Date.now()-qStart)<1600) showToast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
+  var card=document.getElementById("card");
+  card.style.transition=".32s ease";
+  card.style.transform="translateX("+(dir==="yes"?600:-600)+"px) rotate("+(dir==="yes"?18:-18)+"deg)";
+  card.style.opacity="0";
+  setTimeout(function(){
+    if(idx<QUESTIONS.length-1){idx++;renderCard();}
+    else{startLoading();}
+  },300);
+}
+function choose(dir){commit(dir);}
+function startLoading(){
+  var lm=document.getElementById("loadMsg");lm.textContent=LOADMSGS[0];
+  show("loading");
+  var i=1;var iv=setInterval(function(){lm.textContent=LOADMSGS[i%LOADMSGS.length];i++;},600);
+  setTimeout(function(){clearInterval(iv);showResult();},1700);
+}
+function back(){
+  if(idx===0)return;
+  idx--; var q=QUESTIONS[idx]; var d=answers[idx];
+  if(d){var ids=d==="yes"?q.yes:q.no; ids.forEach(function(id){scores[id]=(scores[id]||1)-1;});}
+  renderCard();
+}
+var _countUpTimer=null;
+function countUp(el,to){
+  clearInterval(_countUpTimer);
+  var cur=0;var step=Math.max(1,Math.round(to/40));
+  _countUpTimer=setInterval(function(){cur+=step;if(cur>=to){cur=to;clearInterval(_countUpTimer);}
+    el.textContent=cur.toLocaleString();},22);
+}
+function resultKey(){
+  var ids=Object.keys(TYPES);
+  var bestScore=-1, tieList=[];
+  ids.forEach(function(id){
+    var s=scores[id]||0;
+    if(s>bestScore){bestScore=s;tieList=[id];}
+    else if(s===bestScore){tieList.push(id);}
+  });
+  if(tieList.length===1)return tieList[0];
+  var hash=0;
+  for(var i=0;i<answers.length;i++)hash+=(answers[i]==="yes"?1:0)*(i+1);
+  return tieList[hash%tieList.length];
+}
+function personalSave(base){
+  var ids=Object.keys(TYPES);
+  var maxScore=0;
+  ids.forEach(function(id){var s=scores[id]||0; if(s>maxScore)maxScore=s;});
+  var strength=maxScore/QUESTIONS.length;
+  return Math.round(base*(0.85+0.3*strength)/100)*100;
+}
+function confetti(){
+  var wrap=document.createElement("div");
+  wrap.className="confetti-wrap";
+  var em=["🎉","✨","🐷","💰"];
+  for(var i=0;i<18;i++){
+    var s=document.createElement("span");
+    s.className="confetti-piece";
+    s.textContent=em[i%em.length];
+    s.style.left=(Math.random()*100)+"%";
+    s.style.animationDelay=(Math.random()*0.4)+"s";
+    s.style.fontSize=(14+Math.random()*14)+"px";
+    wrap.appendChild(s);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(function(){wrap.remove();},1800);
+}
+function showResult(){
+  var key=resultKey();
+  var ty=TYPES[key];
+  var save=personalSave(ty.save);
+  var typeWrap=document.getElementById("typeWrap");
+  typeWrap.classList.remove("no-img");
+  typeWrap.setAttribute("data-fallback",ty.emo||"⚔️");
+  document.getElementById("typeImg").src="img/types/"+key+".jpg";
+  document.getElementById("typeName").innerHTML=ty.name;
+  document.getElementById("codeRow").innerHTML=ty.tags.map(function(t){return '<span class="code-chip">'+t+'</span>';}).join("");
+  document.getElementById("rarity").textContent="🐣 同じタイプは約 "+ty.rarity+"%（"+(ty.rarity<=10?"レア！":"人気タイプ")+"）";
+  document.getElementById("typeDesc").textContent=ty.desc;
+  document.getElementById("trivia").innerHTML="💡 "+ty.trivia;
+  document.getElementById("bridge").innerHTML="🔑 "+ty.bridge;
+  document.getElementById("yearsNum").textContent="¥"+(save*4).toLocaleString();
+  document.getElementById("recList").innerHTML=ty.recs.map(function(k){var r=P[k];
+    return '<a class="rec" href="'+r.url+'" target="_blank" rel="'+(r.pr?'nofollow sponsored noopener':'noopener')+'">'
+      +'<span class="ico" style="background:'+r.bg+'">'+r.ico+'</span>'
+      +'<span class="txt"><b>'+r.name+(r.pr?' <span class="pr-tag">PR</span>':'')+'</b><span class="short">'+r.desc+'</span>'
+      +'<span class="detail">'+r.detail+'</span></span>'
+      +'<span class="go">›</span></a>';
+  }).join("");
+  var fin=F[ty.fin];
+  document.getElementById("finList").innerHTML=
+    '<a class="rec fin" href="'+fin.url+'" target="_blank" rel="nofollow sponsored noopener">'
+    +'<span class="ico" style="background:'+fin.bg+'">'+fin.ico+'</span>'
+    +'<span class="txt"><b>'+fin.name+' <span class="pr-tag">PR</span></b><span class="short">'+fin.desc+'</span>'
+    +'<span class="detail">'+fin.detail+'</span></span>'
+    +'<span class="go">›</span></a>';
+  window._type=ty.name; window._save=save;
+  show("result");
+  countUp(document.getElementById("bigNum"),save);
+  confetti();
+}
+function shareX(){
+  var url=encodeURIComponent(location.href);
+  var text=encodeURIComponent("私のお金タイプは【"+(window._type||"")+"】！年間 約¥"+(window._save||0).toLocaleString()+" お得らしい⚔️💰\nあなたはどの武将タイプ？診断してみて→ #学割 #戦国武将お金診断");
+  window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url,"_blank");
+}
+function shareLine(){
+  var url=encodeURIComponent(location.href);
+  window.open("https://line.me/R/msg/text/?"+encodeURIComponent("戦国武将お金診断やってみて⚔️→ ")+url,"_blank");
+}
+function retry(){startQuiz();}
+
+// 金の文字が舞い落ちる背景演出（戦国語の漢字版マトリックス演出）
+(function(){
+  var canvas=document.getElementById("kanjiRain");
+  var ctx=canvas.getContext("2d");
+  var chars="金侍刀兵陣将軍戦攻守城馬弓矢".split("");
+  var fontSize=18, columns, drops;
+  function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    columns=Math.floor(canvas.width/fontSize);
+    drops=new Array(columns).fill(0).map(function(){return Math.random()*-40;});
+  }
+  resize();
+  window.addEventListener("resize",resize);
+  function draw(){
+    ctx.fillStyle="rgba(8,9,12,0.10)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.font=fontSize+"px serif";
+    for(var i=0;i<columns;i++){
+      var text=chars[Math.floor(Math.random()*chars.length)];
+      var y=drops[i]*fontSize;
+      var grad=ctx.createLinearGradient(0,y-fontSize,0,y);
+      grad.addColorStop(0,"rgba(212,175,55,0)");
+      grad.addColorStop(1,"rgba(212,175,55,0.85)");
+      ctx.fillStyle=grad;
+      ctx.fillText(text,i*fontSize,y);
+      if(y>canvas.height && Math.random()>0.975)drops[i]=0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw,60);
+})();
+
+// 武将一覧プレビュー（スタート画面）
+(function(){
+  var grid=document.getElementById("rosterGrid");
+  if(!grid)return;
+  grid.innerHTML=Object.keys(TYPES).map(function(k){
+    var t=TYPES[k];
+    var label=t.name.split(t.emo).join("");
+    return '<div class="roster-item" onclick="openTypeModal(\''+k+'\')"><span class="roster-ico" data-fallback="'+t.emo+'">'
+      +'<img src="img/types/'+k+'.jpg" alt="" onerror="this.parentElement.classList.add(\'no-img\')"></span>'
+      +'<span class="roster-name">'+label+'</span></div>';
+  }).join("");
+})();
+function openTypeModal(key){
+  var t=TYPES[key];
+  document.getElementById("modalImg").src="img/types/"+key+".jpg";
+  document.getElementById("modalName").innerHTML=t.name;
+  document.getElementById("modalTags").innerHTML=t.tags.map(function(tag){return '<span class="code-chip">'+tag+'</span>';}).join("");
+  document.getElementById("modalDesc").textContent=t.desc;
+  document.getElementById("modalTrivia").innerHTML="💡 "+t.trivia;
+  document.getElementById("typeModal").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeTypeModal(){
+  document.getElementById("typeModal").classList.remove("show");
+  document.body.style.overflow="";
+}
+
+// スワイプ操作
+(function(){
+  var card=document.getElementById("card");
+  var startX=0,dx=0,dragging=false;
+  card.addEventListener("pointerdown",function(e){dragging=true;startX=e.clientX;dx=0;card.style.transition="none";
+    try{card.setPointerCapture(e.pointerId);}catch(_){}});
+  card.addEventListener("pointermove",function(e){if(!dragging)return;dx=e.clientX-startX;
+    card.style.transform="translateX("+dx+"px) rotate("+(dx*0.05)+"deg)";setHints(dx);});
+  card.addEventListener("pointerup",function(e){if(!dragging)return;dragging=false;
+    if(dx>95){commit("yes");}else if(dx<-95){commit("no");}
+    else{card.style.transition=".2s ease";card.style.transform="";clearHints();}dx=0;});
+  card.addEventListener("pointercancel",function(){dragging=false;card.style.transition=".2s ease";card.style.transform="";clearHints();dx=0;});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学割でいくらお得？｜大学生の節約シミュレーター🐷｜学割メモ</title>
+<meta name="description" content="使ってる学割を選ぶだけ。大学生のあなたが学割で年間いくらお得になるか30秒で計算できる節約シミュレーター。結果はシェアもできます。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="学割でいくらお得？｜大学生の節約シミュレーター🐷">
+<meta property="og:description" content="使ってる学割を選ぶだけ。大学生のあなたが学割で年間いくらお得になるか30秒で計算できる節約シミュレーター。">
+<meta property="og:image" content="img/avatar.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学割の節約シミュレーター🐷">
+<meta name="twitter:description" content="使ってる学割を選ぶだけ。年間いくらお得か30秒で分かる！">
+<meta name="twitter:image" content="img/avatar.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%B7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ① スタート -->
+  <section class="screen" id="start">
+    <div class="brand">
+      <img src="img/avatar.png" alt="ぶたメモ">
+      <span class="tag">🐷 学割メモ</span>
+    </div>
+    <div class="start-card">
+      <h1>あなたは学割で<br><span class="hl">年間いくらお得</span>？</h1>
+      <p>使ってる学割を選ぶだけ。<br>知らずに定価で払ってる損、見える化します💰</p>
+      <div class="meta"><span>⏱️ 約30秒</span><span>📲 結果をシェアできる</span></div>
+      <button class="btn-main btn-yellow" onclick="startSim()">計算をはじめる →</button>
+    </div>
+    <p class="foot-note">節約額は目安です。価格・条件は各公式でご確認ください（2026年6月時点）。本ページには広告（アフィリエイト）を含みます。</p>
+  </section>
+
+  <!-- ② 選択 -->
+  <section class="screen" id="select">
+    <p class="q-num">使ってる・使いたい学割をタップ</p>
+    <h2 class="q-title">あなたが使う学割は？</h2>
+    <div class="sim-list" id="simList"></div>
+    <div class="total-bar">
+      <div class="tb-left"><span>現在の節約額（年間）</span><b id="liveTotal">¥0</b></div>
+      <button class="tb-btn" id="resultBtn" onclick="showResult()" disabled>1つ以上えらんでね</button>
+    </div>
+  </section>
+
+  <!-- ③ 結果 -->
+  <section class="screen" id="result">
+    <div class="result-head">
+      <img src="img/avatar.png" alt="ぶたメモ">
+      <p class="label">診断結果</p>
+      <p class="big-label">あなたは学割で年間</p>
+      <div class="big-num-wrap">¥<span id="bigNum">0</span><span class="oku">お得！</span></div>
+      <p class="years">大学4年なら <b id="yearsNum">¥0</b> の差！😳</p>
+    </div>
+    <p class="rec-title">この学割を使お🐷</p>
+    <div class="rec-list" id="breakList"></div>
+    <a class="cross-link" href="index.html">🔍 あなたの学割タイプを診断する →</a>
+    <div class="share-row">
+      <button class="share-x" onclick="shareX()">𝕏 で自慢する</button>
+      <button class="share-line" onclick="shareLine()">LINEで送る</button>
+    </div>
+    <button class="retry" onclick="retry()">もう一度計算する</button>
+    <p class="foot-note">
+      節約額は目安です。価格・条件は各公式サイトでご確認ください（2026年6月時点）。本ページのリンクには広告を含みます。<br>
+      クレジットカードは使いすぎに注意し、自分に合う1枚を選びましょう。
+    </p>
+  </section>
+
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

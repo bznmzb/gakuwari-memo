@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ネタ選定マトリックス｜学割メモ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%B7%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --yellow:#FFC83D;--bg:#0c0d12;--panel:#16181f;--panel2:#1c1f29;
+  --line:rgba(255,255,255,.10);--line2:rgba(255,255,255,.18);
+  --text:#f3f4f7;--muted:#9aa1b2;
+  --o:#3ddc84;--p:#4d9fff;--q:#FFC83D;--r:#ff5c5c;--x:#8a92a6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  background:radial-gradient(820px 440px at 50% -160px,rgba(255,200,61,.22),rgba(255,200,61,0) 70%),var(--bg);
+  color:var(--text);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 70px}
+h1{font-size:24px;font-weight:900}
+h1 .hl{color:var(--yellow)}
+.sub{color:var(--muted);font-size:13px;font-weight:600;margin-top:8px;line-height:1.7}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+.lg{font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;border:1px solid var(--line2)}
+.lg .b{font-weight:900;margin-right:4px}
+.mtx{margin-top:14px;display:grid;grid-template-columns:132px repeat(4,1fr);gap:6px}
+.mh{background:rgba(255,200,61,.14);color:var(--yellow);border-radius:8px;font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 2px}
+.rh{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 9px;
+  display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800}
+.badge{font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px;flex-shrink:0}
+.cell{background:var(--panel);border:1.5px solid var(--line);border-radius:8px;min-height:44px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;transition:.12s;user-select:none}
+.cell:hover{border-color:var(--yellow);background:var(--panel2)}
+.cell.on{border-color:var(--yellow);background:rgba(255,200,61,.16);color:var(--yellow)}
+.cell.on::before{content:"✓";font-weight:900}
+.cell:not(.on)::before{content:"＋"}
+.bar{display:flex;align-items:center;justify-content:space-between;margin:22px 0 10px}
+.bar h2{font-size:16px;font-weight:900}
+.bar h2 span{color:var(--yellow)}
+.clear{background:transparent;border:1px solid var(--line2);color:var(--muted);font-weight:700;font-size:12px;
+  padding:7px 12px;border-radius:10px;cursor:pointer;font-family:inherit}
+.clear:hover{border-color:var(--r);color:var(--r)}
+.tray{display:flex;flex-direction:column;gap:12px}
+.empty{color:var(--muted);font-size:13px;font-weight:600;background:var(--panel);border:1px dashed var(--line2);
+  border-radius:14px;padding:22px;text-align:center}
+.grp{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 17px}
+.grp .ttl{font-size:16px;font-weight:900;color:var(--yellow);line-height:1.4}
+.grp .meta{font-size:11px;color:var(--muted);font-weight:700;margin:3px 0 11px}
+.grp ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.grp li{font-size:13.5px;font-weight:600;padding-left:20px;position:relative;line-height:1.5}
+.grp li .n{font-weight:800;color:var(--yellow);margin-right:5px}
+.grp li::before{content:"";position:absolute;left:4px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--yellow)}
+.grp .note{font-size:11px;color:#ffd77a;background:rgba(255,200,61,.10);border:1px solid rgba(255,200,61,.2);
+  border-radius:9px;padding:7px 10px;margin-top:11px;line-height:1.6}
+.copy{margin-top:11px;background:transparent;border:1px solid var(--line2);color:var(--muted);font-weight:700;
+  font-size:12px;padding:6px 12px;border-radius:9px;cursor:pointer;font-family:inherit}
+.copy:hover{border-color:var(--yellow);color:var(--yellow)}
+.foot{color:var(--muted);font-size:11px;margin-top:26px;line-height:1.8;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:560px){
+  .mtx{grid-template-columns:92px repeat(4,1fr)}
+  .rh{font-size:10.5px;padding:6px;gap:4px}
+  h1{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🐷 ネタ選定<span class="hl">マトリックス</span></h1>
+  <p class="sub">ジャンル × 狙い のマスをタップ → <b>◯選パッケージ（タイトル＋中身）</b>がまるっと出ます。<b>複数選べます。</b><br>左のバッジ＝OPQR分析（その系統が今どの状態か）。</p>
+
+  <div class="legend">
+    <span class="lg" style="color:var(--o)"><span class="b">O</span>稼ぎ頭</span>
+    <span class="lg" style="color:var(--p)"><span class="b">P</span>質を上げる</span>
+    <span class="lg" style="color:var(--q)"><span class="b">Q</span>露出を増やす</span>
+    <span class="lg" style="color:var(--r)"><span class="b">R</span>見直し</span>
+    <span class="lg" style="color:var(--x)"><span class="b">未</span>テスト</span>
+  </div>
+
+  <div class="mtx" id="mtx"></div>
+
+  <div class="bar">
+    <h2>選んだ企画 <span id="cnt">0</span></h2>
+    <button class="clear" id="clear">全部クリア</button>
+  </div>
+  <div class="tray" id="tray"><div class="empty">上のマスをタップすると、ここに「◯選パッケージ」が出ます🐷</div></div>
+
+  <p class="foot">
+    保存済みの企画は目安です。価格や「明日使える」系は投稿前に必ず公式で確認してください（鮮度が命）。<br>
+    クレカ・金融・脱毛などはYMYL。断定せず、注意書き（使いすぎ注意など）を添えましょう。<br>
+    OPQRバッジは現時点の投稿データに基づく分類です。
+  </p>
+</div>
+
+<script>
+var OPQR={
+  "交通・旅行":"P","遊び・レジャー":"O","飲食・カフェ":"未","サブスク":"R",
+  "ガジェット・PC":"Q","美容・サロン":"Q","ファッション":"Q","クレカ・金融":"未"
+};
+var COL={"O":"var(--o)","P":"var(--p)","Q":"var(--q)","R":"var(--r)","未":"var(--x)"};
+var FOCUS=["旬","保存","マネタイズ","量産"];
+var DATA={
+ "交通・旅行":{
+   "旬":{t:"夏の帰省が激安になる学割3選",items:["青春18きっぷ（3日間1万円・7/18〜JR乗り放題）","夜行・高速バスの学割（学生証で約20%off）","早めの予約で新幹線もお得に"]},
+   "保存":{t:"【保存版】交通の学割5選",items:["JR学割乗車券（片道101km以上で2割引）","新幹線＋学割の合わせ技","高速バスの学割","飛行機の若者割（22歳以下）","青春18きっぷ（夏の定番）"]},
+   "マネタイズ":{t:"学生の交通費を最安にする3選",items:["高速バス予約サイトを比較","格安移動アプリを使う","学割乗車券を活用"],note:"予約サイトはアフィリと相性◎"},
+   "量産":{t:"知らないと損な交通の裏ワザ3選",items:["夜行バスは学生証だけで割引","学割証は学校で発行できる","回数券・定期の学割"]}
+ },
+ "遊び・レジャー":{
+   "旬":{t:"夏休みに使える遊びの学割3選",items:["ラウンドワン（スポッチャ・ボウリング学生料金）","水族館（学生証で割引）","プール・レジャー施設の学生料金"]},
+   "保存":{t:"【保存版】遊びの学割5選",items:["カラオケ（平日昼が激安）","映画館（学生1,000円台）","ボウリング（ラウンドワン学生料金）","水族館（学生割引）","美術館・博物館（学生料金）"]},
+   "マネタイズ":{t:"レジャーを安く予約する3選",items:["レジャー予約サイトの割引（アソビュー等）","前売り・早割チケット","学割チケットを事前購入"],note:"予約サイトはアフィリ向き"},
+   "量産":{t:"学生証で得する遊び3選",items:["ラウンドワンの学生料金","水族館の学割","美術館・博物館の学生料金"]}
+ },
+ "飲食・カフェ":{
+   "旬":{t:"夏に使える飲食の学割3選",items:["ゴンチャ（22歳以下のENJOY U22割）","カフェの季節メニューをお得に","学生向けモバイルオーダー割"],note:"価格・対象は公式で必ず確認（鮮度が大事）"},
+   "保存":{t:"【保存版】飲食の学生サービス5選",items:["ゴンチャ（22歳以下割）","学生向け食べ放題・ドリンクバー","デリバリーの学生クーポン","チェーンの学生証サービス","安ランチ術"],note:"各チェーンの今の学割は要確認"},
+   "マネタイズ":{t:"学生の食費を減らす3選",items:["フードデリバリーの学生クーポン","定期宅配・ミールキットの学割","まとめ買い・サブスク弁当"],note:"デリバリー系はアフィリ向き"},
+   "量産":{t:"明日使える飲食の学割（単発）",items:["ゴンチャの22歳以下割","（今使える単発ブランドを1つ）","（今使える単発ブランドを1つ）"],note:"1ブランド1投稿。今使えるか必ず確認"}
+ },
+ "サブスク":{
+   "旬":{t:"新生活で入るべきサブスク学割3選",items:["Spotify学割（月額オフ）","YouTube Premium学割","Amazon Prime Student（6ヶ月無料）"]},
+   "保存":{t:"【保存版】サブスク学割5選",items:["Apple Music学割","Spotify学割","YouTube Premium学割","Prime Student","Adobe・クラウド系学割"]},
+   "マネタイズ":{t:"学割で得するサブスク3選",items:["音楽サブスクの学割申込","YouTube Premium学割","Prime Student"],note:"サブスク学割はアフィリの王道"},
+   "量産":{t:"月◯円得するサブスク学割（単発）",items:["Spotify学割 単発","YouTube Premium学割 単発","Prime Student 単発"]}
+ },
+ "ガジェット・PC":{
+   "旬":{t:"新生活のPC・ガジェット学割3選",items:["Apple学割（Mac・iPad）","Microsoft 365の学割","学割で揃える周辺機器"]},
+   "保存":{t:"【保存版】ガジェットの学割5選",items:["Apple学割","Adobe CC学割","Microsoft 365学割","PC各社の学割","周辺機器の学割"]},
+   "マネタイズ":{t:"学割でお得なPC環境3選",items:["Adobe CC学割（大幅オフ）","Microsoft 365学割","PC本体の学割購入"],note:"Adobe・PCは高単価アフィリ向き"},
+   "量産":{t:"知らないと損なガジェット学割3選",items:["Apple学割の裏ワザ","Office（Microsoft）学割","音楽・クラウドの学割"]}
+ },
+ "美容・サロン":{
+   "旬":{t:"夏前にやりたい美容の学割3選",items:["脱毛サロンの学割","日焼け・スキンケアの学生割","美容院の学割カット"],note:"脱毛はYMYL寄り。使いすぎ注意を添える"},
+   "保存":{t:"【保存版】美容の学割5選",items:["美容院（学生カット割）","脱毛サロン","エステ体験","まつ毛・眉サロン","コスメの学割・定期"]},
+   "マネタイズ":{t:"学割で得する美容3選",items:["脱毛サロンの学割","コスメ定期便","サロン予約サイトの割引"],note:"脱毛は高単価だが断定NG・注意書き必須"},
+   "量産":{t:"学生証で安くなる美容3選",items:["美容院の学生割","まつ毛・眉サロン","ネイルの学割"]}
+ },
+ "ファッション":{
+   "旬":{t:"今スニーカーが学割で安い3選",items:["adidas（学生10%off）","Nike（学生10%off）","New Balance（10%off＋送料無料）"],note:"W杯シーズンで旬。割引率は公式で確認"},
+   "保存":{t:"【保存版】服・靴の学割5選",items:["adidas（10%off）","Nike（10%off）","New Balance（10%off＋送料無料）","アパレルECの学生認証割","古着アプリで賢く"]},
+   "マネタイズ":{t:"学割で服を安く買う3選",items:["アパレルECの学生割（学生認証）","スポーツブランドの学割","古着・フリマアプリ"],note:"EC・フリマはアフィリ向き"},
+   "量産":{t:"明日使えるファッション学割（単発）",items:["adidas 学生10%off","New Balance 10%off＋送料無料","Nike 学生10%off"]}
+ },
+ "クレカ・金融":{
+   "旬":{t:"新生活で作る学生向けカード3選",items:["年会費無料の学生カード","ポイント高還元の1枚","キャッシュレスの学生特典"],note:"YMYL。断定せず・使いすぎ注意を必ず添える"},
+   "保存":{t:"【保存版】学生のお金の得ワザ5選",items:["学生向けクレカ","◯◯Payの学生特典","ポイントの二重取り","証券の学生口座","固定費の見直し"],note:"断定NG・注意書き必須"},
+   "マネタイズ":{t:"学生が作れるお得カード3選",items:["年会費無料の学生クレカ","高還元カード","キャッシュレス連携"],note:"高単価アフィリだがYMYL・使いすぎ注意を明記"},
+   "量産":{t:"学生が得する決済ワザ3選",items:["◯◯Payの学生特典","ポイント二重取り","学割じゃないが学生に得な決済"],note:"注意書きを添える"}
+ }
+};
+var sel=[];
+var mtx=document.getElementById('mtx');
+var GEN=Object.keys(DATA);
+
+var corner=document.createElement('div');
+corner.className='mh';corner.textContent='ジャンル ＼ 狙い';
+mtx.appendChild(corner);
+FOCUS.forEach(function(f){var h=document.createElement('div');h.className='mh';h.textContent=f;mtx.appendChild(h);});
+GEN.forEach(function(g){
+  var rh=document.createElement('div');rh.className='rh';
+  var o=OPQR[g];
+  rh.innerHTML='<span class="badge" style="background:'+COL[o]+';color:#0c0d12">'+o+'</span><span>'+g+'</span>';
+  mtx.appendChild(rh);
+  FOCUS.forEach(function(f){
+    var c=document.createElement('div');c.className='cell';c.setAttribute('data-g',g);c.setAttribute('data-f',f);
+    c.addEventListener('click',function(){
+      var key=g+'|'+f;var i=sel.indexOf(key);
+      if(i>=0){sel.splice(i,1);c.classList.remove('on');}
+      else{sel.push(key);c.classList.add('on');}
+      renderTray();
+    });
+    mtx.appendChild(c);
+  });
+});
+
+function pkgText(g,f,d){
+  var s=d.t+'\n';
+  d.items.forEach(function(n,idx){s+=(idx+1)+'. '+n+'\n';});
+  return s.trim();
+}
+function renderTray(){
+  var tray=document.getElementById('tray');
+  document.getElementById('cnt').textContent=sel.length;
+  if(sel.length===0){tray.innerHTML='<div class="empty">上のマスをタップすると、ここに「◯選パッケージ」が出ます🐷</div>';return;}
+  tray.innerHTML=sel.map(function(key){
+    var p=key.split('|'),g=p[0],f=p[1],d=DATA[g][f];
+    var lis=d.items.map(function(n,idx){return '<li><span class="n">'+(idx+1)+'</span>'+n+'</li>';}).join('');
+    var note=d.note?'<div class="note">⚠️ '+d.note+'</div>':'';
+    return '<div class="grp"><div class="ttl">'+d.t+'</div><div class="meta">'+g+' × '+f+'</div><ul>'+lis+'</ul>'+note
+      +'<button class="copy" onclick="copyPkg(\''+g+'\',\''+f+'\')">コピー</button></div>';
+  }).join('');
+}
+window.copyPkg=function(g,f){
+  var d=DATA[g][f];var t=pkgText(g,f,d);
+  if(navigator.clipboard){navigator.clipboard.writeText(t);}
+};
+document.getElementById('clear').addEventListener('click',function(){
+  sel=[];
+  Array.prototype.forEach.call(document.querySelectorAll('.cell.on'),function(c){c.classList.remove('on');});
+  renderTray();
+});
+</script>
+</body>
+</html>
